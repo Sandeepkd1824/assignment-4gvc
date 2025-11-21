@@ -49,6 +49,20 @@ def submit():
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 400
 
+@app.route("/submittodoitem", methods=["POST"])
+def submit_todo_item():
+    data = request.json
+    item_name = data.get("itemName")
+    item_description = data.get("itemDescription")
+
+    # Store in MongoDB
+    collection.insert_one({
+        "itemName": item_name,
+        "itemDescription": item_description
+    })
+
+    return jsonify({"message": "Item stored successfully!"}), 200
+
 
 if __name__ == "__main__":
     app.json_encoder = JSONEncoder
